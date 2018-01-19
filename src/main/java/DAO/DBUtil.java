@@ -9,17 +9,15 @@ public class DBUtil {
     private static Connection conn =null;
     private static ResultSet rs;
 
-    String s, url =                       "jdbc:oracle:thin:@localhost:1521:XE";
-    private static final String connStr = "jdbc:oracle:thin:@hard-mouthed-visibi.000webhostapp.com:1521:XE";
-    //
-    //private static final String connStr = "jdbc:mysql://localhost:3306/tutorial";
+    private static final String connStr = "jdbc:mysql://localhost:3306/Tutorial";
+
     private static final String USER = "root";
     private static final String PASSWORD = "root";
 
     public static void dbConnect() throws SQLException, ClassNotFoundException {
         //Setting Oracle JDBC Driver
         try {
-            Class.forName(JDBC_DRIVER);
+            Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             System.out.println("Where is your Oracle JDBC Driver?");
             e.printStackTrace();
@@ -27,15 +25,19 @@ public class DBUtil {
         }
 
         System.out.println("Oracle JDBC Driver Registered!");
+        System.out.println("BEGIN\n" +
+                "INSERT INTO employees\n" +
+                "(EMPLOYEE_ID, FIRST_NAME, LAST_NAME, EMAIL, HIRE_DATE, JOB_ID)\n" +
+                "VALUES\n" +
+                "(sequence_employee.nextval, '" + "Lion" + "', '" + "Wotson" + "','" + "fff@ds.com" + "', '2015-01-01', 'IT_PROG');\n" +
+                "END;");
 
         //Establish the Oracle Connection using Connection String
         try {
-            conn = DriverManager.getConnection(connStr,"id4315794_sql2018", "System08%"/*,USER,PASSWORD*/);
+            conn = DriverManager.getConnection(connStr,USER,PASSWORD);
             Statement stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM id4315794_tutorial");
-            while (rs.next()){
-                System.out.print(rs.getInt(1) + " ");
-            }
+        //    rs = stmt.executeQuery("SELECT * FROM employees");
+
 
         } catch (SQLException e) {
             System.out.println("Connection Failed! Check output console " );
